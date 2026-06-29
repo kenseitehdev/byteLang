@@ -106,8 +106,30 @@ static char *bl_text_concat3(const char *left, const char *middle, const char *r
     return text;
 }
 
+
+static int bl_token_is_name_part(BLTokenKind kind) {
+    switch (kind) {
+        case TOK_IDENT:
+        case TOK_NEW:
+        case TOK_DEFINE:
+        case TOK_MACRO:
+        case TOK_FN:
+        case TOK_RETURN:
+        case TOK_DELETE:
+        case TOK_FREE:
+        case TOK_MALLOC:
+        case TOK_REALLOC:
+        case TOK_IF:
+        case TOK_ELSE:
+        case TOK_WHILE:
+            return 1;
+        default:
+            return 0;
+    }
+}
+
 static char *bl_parse_qualified_ident_text(BLParser *parser, const char *message) {
-    if (parser->current.kind != TOK_IDENT) {
+    if (!bl_token_is_name_part(parser->current.kind)) {
         bl_parser_set_error(parser, parser->current.line, parser->current.column, "%s", message);
         return NULL;
     }
@@ -116,7 +138,7 @@ static char *bl_parse_qualified_ident_text(BLParser *parser, const char *message
     bl_advance(parser);
 
     while (!parser->error && bl_match(parser, TOK_DOT)) {
-        if (parser->current.kind != TOK_IDENT) {
+        if (!bl_token_is_name_part(parser->current.kind)) {
             free(name);
             bl_parser_set_error(parser, parser->current.line, parser->current.column, "expected identifier after '.'");
             return NULL;

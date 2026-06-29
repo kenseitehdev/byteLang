@@ -496,11 +496,21 @@ static BLValue bl_builtin_call(BLVM *vm, BLNode *call_node, const char *name, BL
     if (strcmp(name, "String.cmp") == 0) return bl_builtin_string_cmp(vm, call_node, args, argc);
     if (strcmp(name, "String.length") == 0) return bl_builtin_string_length(vm, call_node, args, argc);
     if (strcmp(name, "len") == 0) return bl_builtin_len(vm, call_node, args, argc);
-    if (strcmp(name, "array_new") == 0) return bl_builtin_array_new(vm, call_node, args, argc);
-    if (strcmp(name, "array_grow") == 0) return bl_builtin_array_grow(vm, call_node, args, argc);
-    if (strcmp(name, "array_set") == 0) return bl_builtin_array_set(vm, call_node, args, argc);
-    if (strcmp(name, "array_get") == 0) return bl_builtin_array_get(vm, call_node, args, argc);
-    if (strcmp(name, "array_len") == 0) return bl_builtin_array_len(vm, call_node, args, argc);
+    if (strcmp(name, "array_new") == 0 || strcmp(name, "Array.new") == 0) {
+        return bl_builtin_array_new(vm, call_node, args, argc);
+    }
+    if (strcmp(name, "array_grow") == 0 || strcmp(name, "Array.grow") == 0) {
+        return bl_builtin_array_grow(vm, call_node, args, argc);
+    }
+    if (strcmp(name, "array_set") == 0 || strcmp(name, "Array.set") == 0) {
+        return bl_builtin_array_set(vm, call_node, args, argc);
+    }
+    if (strcmp(name, "array_get") == 0 || strcmp(name, "Array.get") == 0) {
+        return bl_builtin_array_get(vm, call_node, args, argc);
+    }
+    if (strcmp(name, "array_len") == 0 || strcmp(name, "Array.length") == 0) {
+        return bl_builtin_array_len(vm, call_node, args, argc);
+    }
     if (strcmp(name, "malloc") == 0) return bl_builtin_malloc(vm, call_node, args, argc);
     if (strcmp(name, "realloc") == 0) return bl_builtin_realloc(vm, call_node, args, argc);
     if (strcmp(name, "assert") == 0) return bl_builtin_assert(vm, call_node, args, argc);

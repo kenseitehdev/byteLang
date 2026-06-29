@@ -1,39 +1,59 @@
+import {Array}
+
 define macro "Tensor" "array";
 
-define fn Tensor.new(data_capacity, rank) {
-    new Array data = Array.new(data_capacity);
+define fn Tensor.new(totalSize, rank) {
+    new Array data = Array.new(totalSize);
     new Array shape = Array.new(rank);
-    new array t = array_new(3);
-    array_set(t, 0, data);
-    array_set(t, 1, shape);
-    array_set(t, 2, rank);
+    new Tensor t = Array.new(3);
+
+    Array.set(t, 0, data);
+    Array.set(t, 1, shape);
+    Array.set(t, 2, rank);
+
     return t;
 }
 
 define fn Tensor.data(t) {
-    return array_get(t, 0);
+    return Array.get(t, 0);
 }
 
 define fn Tensor.shape(t) {
-    return array_get(t, 1);
+    return Array.get(t, 1);
 }
 
 define fn Tensor.rank(t) {
-    return array_get(t, 2);
+    return Array.get(t, 2);
 }
 
-define fn Tensor.set_dim(t, dim, size) {
+define fn Tensor.length(t) {
+    return Array.length(Tensor.data(t));
+}
+
+define fn Tensor.setDim(t, dim, size) {
+    if (dim < 0) {
+        assert(0);
+    }
+    if (dim >= Tensor.rank(t)) {
+        assert(0);
+    }
     return Array.set(Tensor.shape(t), dim, size);
 }
 
 define fn Tensor.dim(t, dim) {
+    if (dim < 0) {
+        assert(0);
+    }
+    if (dim >= Tensor.rank(t)) {
+        assert(0);
+    }
     return Array.get(Tensor.shape(t), dim);
 }
 
-define fn Tensor.flat_get(t, index) {
+define fn Tensor.flatGet(t, index) {
     return Array.get(Tensor.data(t), index);
 }
 
-define fn Tensor.flat_set(t, index, value) {
+define fn Tensor.flatSet(t, index, value) {
     return Array.set(Tensor.data(t), index, value);
 }
